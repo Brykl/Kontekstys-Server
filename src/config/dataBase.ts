@@ -12,13 +12,9 @@ const pool = new Pool({
 export const testConnection = async () => {
   try {
     const res = await pool.query("SELECT NOW()");
-    const res2 = await pool.query("SELECT * FROM users;");
     console.log("Connected to PostgreSQL. Server time:", res.rows[0].now);
-    console.log("SELECT * FROM users:", res2.rows[0]);
   } catch (error) {
     console.error("Failed to connect to PostgreSQL:", error);
-  } finally {
-    await pool.end();
   }
 };
 
