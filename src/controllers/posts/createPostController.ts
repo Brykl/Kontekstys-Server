@@ -28,19 +28,28 @@ export const createPost = async (
 
     const postId = result.rows[0].id;
 
-    // Если пост приватный — добавить доступы
-    if (is_public === false && Array.isArray(allow) && allow.length > 0) {
-      // Получить user_id по username
-      const usersResult = await pool.query(
-        `
-        SELECT id FROM users WHERE user_name = ANY($1)
-        `,
-        [allow]
-      );
+    // Если пост приватный — добавляем доступы
+    if (is_public === false) {
+      const userIds: number[] = [authorId]; // автор всегда добавляется
 
-      const userIds = usersResult.rows.map((row) => row.id);
+      if (Array.isArray(allow) && allow.length > 0) {
+        const usersResult = await pool.query(
+          `
+          SELECT id FROM users WHERE user_name = ANY($1)
+          `,
+          [allow]
+        );
 
-      // Вставка в post_access
+        const allowedUserIds = usersResult.rows.map((row) => row.id);
+
+        for (const uid of allowedUserIds) {
+          if (!userIds.includes(uid)) {
+            userIds.push(uid);
+          }
+        }
+      }
+
+      // Вставка всех user_id в post_access
       for (const userId of userIds) {
         await pool.query(
           `INSERT INTO post_access (post_id, user_id) VALUES ($1, $2)`,
