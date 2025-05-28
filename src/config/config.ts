@@ -11,6 +11,8 @@ interface Config {
   dbUser: string;
   dbPassword: string;
   dbName: string;
+
+  secretToken: string;
 }
 
 const config: Config = {
@@ -22,6 +24,8 @@ const config: Config = {
   dbUser: process.env.PG_USER || "postgres",
   dbPassword: process.env.PG_PASSWORD || "",
   dbName: process.env.PG_DATABASE || "postgres",
+
+  secretToken: process.env.SECRET_TOKEN || "secret_token_null",
 };
 
 export default config;
