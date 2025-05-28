@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import pool from "../config/dataBase";
+import pool from "../../config/dataBase";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import config from "../config/config";
+import config from "../../config/config";
 
 const JWT_SECRET = config.secretToken;
 

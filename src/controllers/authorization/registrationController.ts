@@ -1,4 +1,4 @@
-import pool from "../config/dataBase";
+import pool from "../../config/dataBase";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 

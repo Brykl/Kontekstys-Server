@@ -1,6 +1,6 @@
 import { Response } from "express";
-import pool from "../config/dataBase";
-import { AuthenticatedRequest } from "../middlewares/authMiddleware"; // Тип как в middleware
+import pool from "../../config/dataBase";
+import { AuthenticatedRequest } from "../../middlewares/authMiddleware"; // Тип как в middleware
 
 export const getAvailablePosts = async (
   req: AuthenticatedRequest,
