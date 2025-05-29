@@ -8,6 +8,7 @@ import createPostRoute from "./routes/posts/createPostRoute";
 import updatePostRoute from "./routes/posts/updatePostRoute";
 import verifyToken from "./routes/authorization/verifyToken";
 import getPostsRouteProfile from "./routes/posts/getPostsProfileRoute";
+import reactions from "./routes/posts/reactions";
 import cors from "cors";
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/api", createPostRoute);
 app.use("/api", updatePostRoute);
 app.use("/api", verifyToken);
 app.use("/api", getPostsRouteProfile);
+app.use("/api/reactions", reactions);
 
 app.use(errorHandler);
 

@@ -15,6 +15,7 @@ export const getAvailablePostsForProfile = async (
       return;
     }
 
+    // Получаем ID пользователя, чей профиль просматривается
     const userResult = await pool.query(
       "SELECT id FROM users WHERE user_name = $1",
       [username]
@@ -27,21 +28,33 @@ export const getAvailablePostsForProfile = async (
 
     const profileUserId = userResult.rows[0].id;
 
+    // Получаем посты с количеством лайков/дизлайков и реакцией текущего пользователя
     const postsResult = await pool.query(
       `
-      SELECT *
-      FROM posts
-      WHERE author_id = $1
-        AND (
-          is_public = true
-          OR id IN (
-            SELECT post_id
-            FROM post_access
-            WHERE user_id = $2
-          )
-        )
-      ORDER BY created_at DESC;
-      `,
+  SELECT 
+    p.*,
+    COUNT(pr_likes.id) FILTER (WHERE pr_likes.is_like = TRUE) AS like_count,
+    COUNT(pr_likes.id) FILTER (WHERE pr_likes.is_dislike = TRUE) AS dislike_count,
+    CASE 
+      WHEN pr_viewer.is_like = TRUE THEN 'like'
+      WHEN pr_viewer.is_dislike = TRUE THEN 'dislike'
+      ELSE NULL
+    END AS viewer_reaction
+  FROM posts p
+  LEFT JOIN post_reactions pr_likes ON pr_likes.post_id = p.id
+  LEFT JOIN post_reactions pr_viewer ON pr_viewer.post_id = p.id AND pr_viewer.user_id = $2
+  WHERE p.author_id = $1
+    AND (
+      p.is_public = true
+      OR p.id IN (
+        SELECT post_id
+        FROM post_access
+        WHERE user_id = $2
+      )
+    )
+  GROUP BY p.id, pr_viewer.is_like, pr_viewer.is_dislike
+  ORDER BY p.created_at DESC;
+  `,
       [profileUserId, viewerId]
     );
 
