@@ -11,6 +11,7 @@ import getPostsRouteProfile from "./routes/posts/getPostsProfileRoute";
 import reactions from "./routes/posts/reactions";
 import deletePosts from "./routes/posts/deletePostsRoute";
 import uploadIcon from "./routes/icon";
+import iconSender from "./routes/profile/iconSender";
 import cors from "cors";
 import path from "path";
 
@@ -36,6 +37,7 @@ app.use("/api", getPostsRouteProfile);
 app.use("/api/reactions", reactions);
 app.use("/api", deletePosts);
 app.use("/api/load", uploadIcon);
+app.use("/api", iconSender);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/icons", express.static(path.join(__dirname, "../public/icons")));
 
