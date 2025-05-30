@@ -10,6 +10,7 @@ import verifyToken from "./routes/authorization/verifyToken";
 import getPostsRouteProfile from "./routes/posts/getPostsProfileRoute";
 import reactions from "./routes/posts/reactions";
 import cors from "cors";
+import path from "path";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api", updatePostRoute);
 app.use("/api", verifyToken);
 app.use("/api", getPostsRouteProfile);
 app.use("/api/reactions", reactions);
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use(errorHandler);
 
