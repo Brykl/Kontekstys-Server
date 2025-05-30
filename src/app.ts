@@ -10,6 +10,7 @@ import verifyToken from "./routes/authorization/verifyToken";
 import getPostsRouteProfile from "./routes/posts/getPostsProfileRoute";
 import reactions from "./routes/posts/reactions";
 import deletePosts from "./routes/posts/deletePostsRoute";
+import uploadIcon from "./routes/icon";
 import cors from "cors";
 import path from "path";
 
@@ -34,7 +35,9 @@ app.use("/api", verifyToken);
 app.use("/api", getPostsRouteProfile);
 app.use("/api/reactions", reactions);
 app.use("/api", deletePosts);
+app.use("/api/load", uploadIcon);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/icons", express.static(path.join(__dirname, "../public/icons")));
 
 app.use(errorHandler);
 
