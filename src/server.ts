@@ -4,6 +4,6 @@ import { testConnection } from "./config/dataBase";
 
 testConnection();
 
-app.listen(config.port, "172.30.253.7", () => {
-  console.log(`Server running on http://172.30.253.7:${config.port}`);
+app.listen(config.port, "172.30.0.66", () => {
+  console.log(`Server running on http://172.30.0.66:${config.port}`);
 });
