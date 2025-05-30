@@ -16,16 +16,29 @@ export const getAvailablePosts = async (
 
     const result = await pool.query(
       `
-      SELECT *
-      FROM posts
-      WHERE is_public = true
-         OR id IN (
-             SELECT post_id
-             FROM post_access
-             WHERE user_id = $1
-         )
-      ORDER BY created_at DESC;
-      `,
+  SELECT 
+    p.*,
+    u.user_name AS author_name,
+    COUNT(pr_likes.id) FILTER (WHERE pr_likes.is_like = TRUE) AS like_count,
+    COUNT(pr_likes.id) FILTER (WHERE pr_likes.is_dislike = TRUE) AS dislike_count,
+    CASE 
+      WHEN pr_viewer.is_like = TRUE THEN 'like'
+      WHEN pr_viewer.is_dislike = TRUE THEN 'dislike'
+      ELSE NULL
+    END AS viewer_reaction
+  FROM posts p
+  JOIN users u ON u.id = p.author_id
+  LEFT JOIN post_reactions pr_likes ON pr_likes.post_id = p.id
+  LEFT JOIN post_reactions pr_viewer ON pr_viewer.post_id = p.id AND pr_viewer.user_id = $1
+  WHERE p.is_public = TRUE
+     OR p.id IN (
+       SELECT post_id
+       FROM post_access
+       WHERE user_id = $1
+     )
+  GROUP BY p.id, u.user_name, pr_viewer.is_like, pr_viewer.is_dislike
+  ORDER BY p.created_at DESC;
+  `,
       [userId]
     );
 
