@@ -9,6 +9,7 @@ import updatePostRoute from "./routes/posts/updatePostRoute";
 import verifyToken from "./routes/authorization/verifyToken";
 import getPostsRouteProfile from "./routes/posts/getPostsProfileRoute";
 import reactions from "./routes/posts/reactions";
+import deletePosts from "./routes/posts/deletePostsRoute";
 import cors from "cors";
 import path from "path";
 
@@ -32,6 +33,7 @@ app.use("/api", updatePostRoute);
 app.use("/api", verifyToken);
 app.use("/api", getPostsRouteProfile);
 app.use("/api/reactions", reactions);
+app.use("/api", deletePosts);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use(errorHandler);
