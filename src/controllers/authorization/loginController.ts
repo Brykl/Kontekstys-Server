@@ -44,6 +44,11 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
         .status(401)
         .json({ message: "Неверное имя пользователя или пароль" });
     }
+    if (user.status == false) {
+      return res
+        .status(400)
+        .json({ message: "Пользователь заблокирвоан" });
+    }
 
     // Формируем JWT, можно добавить icon_url в пейлоад, если нужно
     const token = jwt.sign(
@@ -57,6 +62,7 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
       JWT_SECRET,
       { expiresIn: "2h" }
     );
+    
 
     // Отдаём клиенту все нужные поля
     return res.status(200).json({

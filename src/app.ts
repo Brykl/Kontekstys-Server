@@ -19,6 +19,7 @@ import acceptFriend from "./routes/friends/acceptFriendRequest";
 import getAllRequest from "./routes/friends/getAllRequest";
 import rejectFriendRequest from "./routes/friends/rejectFreinds";
 import removeFriend from "./routes/friends/removeFriend";
+import adminRoute from "./routes/admin/adminRoute";
 import cors from "cors";
 import path from "path";
 
@@ -33,6 +34,7 @@ app.use(
 );
 
 // подключение маршрутов
+app.use("/api/admin", adminRoute);
 app.use("/api/auth", registrationRoute);
 app.use("/api/auth", loginRoute);
 app.use("/api/", profile);
