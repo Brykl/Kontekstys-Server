@@ -17,6 +17,8 @@ import getAllFriends from "./routes/friends/getAllFriends";
 import sendFriends from "./routes/friends/sendFriendRequest";
 import acceptFriend from "./routes/friends/acceptFriendRequest";
 import getAllRequest from "./routes/friends/getAllRequest";
+import rejectFriendRequest from "./routes/friends/rejectFreinds";
+import removeFriend from "./routes/friends/removeFriend";
 import cors from "cors";
 import path from "path";
 
@@ -45,10 +47,13 @@ app.use("/api", deletePosts);
 app.use("/api/load", uploadIcon);
 app.use("/api", iconSender);
 app.use("/api", getAllFriends);
+app.use("/api", getAllFriends);
 app.use("/api", sendFriends);
 app.use("/api", sendFriends);
 app.use("/api", acceptFriend);
 app.use("/api", getAllRequest);
+app.use("/api", rejectFriendRequest);
+app.use("/api", removeFriend);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/icons", express.static(path.join(__dirname, "../public/icons")));
 
