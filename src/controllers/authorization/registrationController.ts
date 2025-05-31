@@ -22,15 +22,21 @@ export const registerUser = async (
       return res.status(409).json({ message: "Пользователь уже существует" });
     }
 
-    // Хеширование пароля перед сохранением
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Добавление пользователя в таблицу
     const newUser = await pool.query(
       `INSERT INTO users (user_name, email, password_hash) 
        VALUES ($1, $2, $3) 
-       RETURNING id, user_name, email, password_hash`,
+       RETURNING id, user_name, email`,
       [username, email, hashedPassword]
+    );
+
+    const newUserId = newUser.rows[0].id;
+
+    // 💡 Вставляем пользователя в таблицу user_friends
+    await pool.query(
+      `INSERT INTO user_friends (user_id) VALUES ($1)`,
+      [newUserId]
     );
 
     return res.status(201).json({
