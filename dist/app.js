@@ -1,0 +1,62 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const errorHandler_1 = require("./middlewares/errorHandler");
+const registrationRoute_1 = __importDefault(require("./routes/authorization/registrationRoute"));
+const loginRoute_1 = __importDefault(require("./routes/authorization/loginRoute"));
+const profile_1 = __importDefault(require("./routes/profile"));
+const getPostsRoute_1 = __importDefault(require("./routes/posts/getPostsRoute"));
+const createPostRoute_1 = __importDefault(require("./routes/posts/createPostRoute"));
+const updatePostRoute_1 = __importDefault(require("./routes/posts/updatePostRoute"));
+const verifyToken_1 = __importDefault(require("./routes/authorization/verifyToken"));
+const getPostsProfileRoute_1 = __importDefault(require("./routes/posts/getPostsProfileRoute"));
+const reactions_1 = __importDefault(require("./routes/posts/reactions"));
+const deletePostsRoute_1 = __importDefault(require("./routes/posts/deletePostsRoute"));
+const icon_1 = __importDefault(require("./routes/icon"));
+const iconSender_1 = __importDefault(require("./routes/profile/iconSender"));
+const friendsRoute_1 = __importDefault(require("./routes/friends/friendsRoute"));
+const getAllFriends_1 = __importDefault(require("./routes/friends/getAllFriends"));
+const sendFriendRequest_1 = __importDefault(require("./routes/friends/sendFriendRequest"));
+const acceptFriendRequest_1 = __importDefault(require("./routes/friends/acceptFriendRequest"));
+const getAllRequest_1 = __importDefault(require("./routes/friends/getAllRequest"));
+const rejectFreinds_1 = __importDefault(require("./routes/friends/rejectFreinds"));
+const removeFriend_1 = __importDefault(require("./routes/friends/removeFriend"));
+const adminRoute_1 = __importDefault(require("./routes/admin/adminRoute"));
+const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use((0, cors_1.default)({
+    origin: "http://172.30.0.66:5173",
+    credentials: true,
+}));
+// подключение маршрутов
+app.use("/api/admin", adminRoute_1.default);
+app.use("/api/auth", registrationRoute_1.default);
+app.use("/api/auth", loginRoute_1.default);
+app.use("/api/", profile_1.default);
+app.use("/api", getPostsRoute_1.default);
+app.use("/api", createPostRoute_1.default);
+app.use("/api", updatePostRoute_1.default);
+app.use("/api", verifyToken_1.default);
+app.use("/api", getPostsProfileRoute_1.default);
+app.use("/api", friendsRoute_1.default);
+app.use("/api/reactions", reactions_1.default);
+app.use("/api", deletePostsRoute_1.default);
+app.use("/api/load", icon_1.default);
+app.use("/api", iconSender_1.default);
+app.use("/api", getAllFriends_1.default);
+app.use("/api", getAllFriends_1.default);
+app.use("/api", sendFriendRequest_1.default);
+app.use("/api", sendFriendRequest_1.default);
+app.use("/api", acceptFriendRequest_1.default);
+app.use("/api", getAllRequest_1.default);
+app.use("/api", rejectFreinds_1.default);
+app.use("/api", removeFriend_1.default);
+app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "../uploads")));
+app.use("/icons", express_1.default.static(path_1.default.join(__dirname, "../public/icons")));
+app.use(errorHandler_1.errorHandler);
+exports.default = app;
